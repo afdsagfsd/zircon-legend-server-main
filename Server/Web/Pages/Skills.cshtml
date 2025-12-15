@@ -126,6 +126,7 @@
                             <th>召唤怪物</th>
                             <th>数量上限</th>
                             <th>护符消耗</th>
+                            <th>学派</th>
                             <th>职业</th>
                             <th>学习等级</th>
                             <th>操作</th>
@@ -143,6 +144,35 @@
                                 </td>
                                 <td><span class="badge bg-primary">@skill.MaxSummonCount</span></td>
                                 <td><span class="badge bg-secondary">@skill.AmuletCost</span></td>
+                                <td>
+                                    @switch (skill.School)
+                                    {
+                                        case "Fire":
+                                            <span class="badge bg-danger">火</span>
+                                            break;
+                                        case "Ice":
+                                            <span class="badge bg-info">冰</span>
+                                            break;
+                                        case "Lightning":
+                                            <span class="badge bg-warning text-dark">雷</span>
+                                            break;
+                                        case "Wind":
+                                            <span class="badge bg-success">风</span>
+                                            break;
+                                        case "Holy":
+                                            <span class="badge bg-light text-dark">神圣</span>
+                                            break;
+                                        case "Dark":
+                                            <span class="badge bg-dark">暗黑</span>
+                                            break;
+                                        case "Phantom":
+                                            <span class="badge bg-purple" style="background-color: #6f42c1 !important;">幻影</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary">无</span>
+                                            break;
+                                    }
+                                </td>
                                 <td>
                                     @switch (skill.Class)
                                     {
@@ -167,7 +197,7 @@
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <button type="button" class="btn btn-outline-primary"
-                                                onclick="editCustomSummon(@skill.Index, '@skill.Name', @skill.SummonMonsterIndex, @skill.MaxSummonCount, @skill.AmuletCost, '@skill.Class', @skill.NeedLevel1, '@skill.Description')">
+                                                onclick="editCustomSummon(@skill.Index, '@skill.Name', @skill.SummonMonsterIndex, @skill.MaxSummonCount, @skill.AmuletCost, '@skill.Class', @skill.NeedLevel1, '@skill.Description', '@skill.School')">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-danger"
@@ -525,6 +555,20 @@
                             <input type="number" class="form-control" name="needLevel" id="customSummon-needLevel" value="1" min="1" max="255">
                             <small class="text-muted">学习技能所需等级</small>
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label">元素学派</label>
+                            <select class="form-select" name="school" id="customSummon-school">
+                                <option value="None">无</option>
+                                <option value="Fire">火</option>
+                                <option value="Ice">冰</option>
+                                <option value="Lightning">雷</option>
+                                <option value="Wind">风</option>
+                                <option value="Holy">神圣</option>
+                                <option value="Dark">暗黑</option>
+                                <option value="Phantom">幻影</option>
+                            </select>
+                            <small class="text-muted">影响召唤宠物的元素加成</small>
+                        </div>
                         <div class="col-12">
                             <label class="form-label">技能描述</label>
                             <textarea class="form-control" name="description" id="customSummon-description" rows="2" placeholder="召唤一只强大的宝宝为你战斗..."></textarea>
@@ -583,6 +627,19 @@
                         <div class="col-md-4">
                             <label class="form-label">学习等级</label>
                             <input type="number" class="form-control" name="needLevel" id="editCustomSummon-needLevel" min="1" max="255">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">元素学派</label>
+                            <select class="form-select" name="school" id="editCustomSummon-school">
+                                <option value="None">无</option>
+                                <option value="Fire">火</option>
+                                <option value="Ice">冰</option>
+                                <option value="Lightning">雷</option>
+                                <option value="Wind">风</option>
+                                <option value="Holy">神圣</option>
+                                <option value="Dark">暗黑</option>
+                                <option value="Phantom">幻影</option>
+                            </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label">技能描述</label>
@@ -757,7 +814,7 @@
         });
 
         // 编辑自定义召唤技能
-        function editCustomSummon(index, name, monsterIndex, maxCount, amuletCost, mirClass, needLevel, description) {
+        function editCustomSummon(index, name, monsterIndex, maxCount, amuletCost, mirClass, needLevel, description, school) {
             document.getElementById('editCustomSummon-index').value = index;
             document.getElementById('editCustomSummon-name').value = name;
             document.getElementById('editCustomSummon-monster').value = monsterIndex;
@@ -766,6 +823,7 @@
             document.getElementById('editCustomSummon-classDisplay').value = getClassDisplayName(mirClass);
             document.getElementById('editCustomSummon-needLevel').value = needLevel;
             document.getElementById('editCustomSummon-description').value = description || '';
+            document.getElementById('editCustomSummon-school').value = school || 'None';
 
             var modal = new bootstrap.Modal(document.getElementById('editCustomSummonModal'));
             modal.show();

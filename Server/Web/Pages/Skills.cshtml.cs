@@ -132,7 +132,8 @@ namespace Server.Web.Pages
                         AmuletCost = m.AmuletCost > 0 ? m.AmuletCost : 1,
                         Class = m.Class.ToString(),
                         NeedLevel1 = m.NeedLevel1,
-                        Description = m.Description ?? ""
+                        Description = m.Description ?? "",
+                        School = m.School.ToString()
                     })
                     .ToList();
             }
@@ -437,7 +438,8 @@ namespace Server.Web.Pages
             int maxCount,
             int amuletCost,
             int needLevel,
-            string description)
+            string description,
+            string school)
         {
             if (!HasPermission(AccountIdentity.SuperAdmin))
             {
@@ -476,7 +478,7 @@ namespace Server.Web.Pages
                 newMagic.Name = name;
                 newMagic.Magic = MagicType.SummonSkeleton;  // 复用召唤骷髅类型
                 newMagic.Class = parsedClass;
-                newMagic.School = MagicSchool.None;
+                newMagic.School = Enum.TryParse<MagicSchool>(school, out var parsedSchool) ? parsedSchool : MagicSchool.None;
                 newMagic.Mode = MagicMode.Free;
                 newMagic.SummonMonsterIndex = monsterIndex;
                 newMagic.MaxSummonCount = maxCount > 0 ? maxCount : 2;
@@ -559,7 +561,8 @@ namespace Server.Web.Pages
             int maxCount,
             int amuletCost,
             int needLevel,
-            string description)
+            string description,
+            string school)
         {
             if (!HasPermission(AccountIdentity.SuperAdmin))
             {
@@ -610,6 +613,10 @@ namespace Server.Web.Pages
                 magicInfo.AmuletCost = amuletCost > 0 ? amuletCost : 1;
                 magicInfo.NeedLevel1 = needLevel > 0 ? needLevel : 1;
                 magicInfo.Description = description ?? "";
+                if (Enum.TryParse<MagicSchool>(school, out var parsedSchool))
+                {
+                    magicInfo.School = parsedSchool;
+                }
 
                 Message = $"自定义召唤技能 [{name}] 更新成功";
                 SEnvir.Log($"[Admin] 更新自定义召唤技能: {name} (ID: {magicIndex})");
@@ -750,6 +757,7 @@ namespace Server.Web.Pages
         public string Class { get; set; } = "";
         public int NeedLevel1 { get; set; }
         public string Description { get; set; } = "";
+        public string School { get; set; } = "";
     }
 
     public class MonsterListViewModel
