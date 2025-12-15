@@ -495,7 +495,50 @@ namespace Server.Web.Pages
                     newMagic.Delay = skeletonMagic.Delay;
                 }
 
-                Message = $"自定义召唤技能 [{name}] 创建成功，召唤怪物: {monster.MonsterName}";
+                // 自动创建对应的技能书物品
+                string skillBookMessage = "";
+                var skillBook = SEnvir.ItemInfoList?.CreateNewObject();
+                if (skillBook != null)
+                {
+                    skillBook.ItemName = $"{name}秘籍";
+                    skillBook.ItemType = ItemType.Book;
+                    skillBook.Shape = newMagic.Index;  // 关联技能
+
+                    // 参考召唤骷髅技能书的参数
+                    var skeletonBook = skeletonMagic != null
+                        ? SEnvir.ItemInfoList.Binding.FirstOrDefault(
+                            i => i.ItemType == ItemType.Book && i.Shape == skeletonMagic.Index)
+                        : null;
+
+                    if (skeletonBook != null)
+                    {
+                        // 复制召唤骷髅技能书的参数
+                        skillBook.Price = skeletonBook.Price;
+                        skillBook.Durability = skeletonBook.Durability;
+                        skillBook.Image = skeletonBook.Image;
+                        skillBook.Weight = skeletonBook.Weight;
+                        skillBook.StackSize = skeletonBook.StackSize;
+                        skillBook.Rarity = skeletonBook.Rarity;
+                    }
+                    else
+                    {
+                        // 默认值
+                        skillBook.Price = 50000;
+                        skillBook.Durability = 80;
+                        skillBook.Image = 1;
+                        skillBook.Weight = 10;
+                        skillBook.StackSize = 1;
+                    }
+
+                    // 职业限制与技能一致
+                    skillBook.RequiredClass = MirClassToRequiredClass(parsedClass);
+                    skillBook.RequiredAmount = needLevel > 0 ? needLevel : 1;  // 学习等级要求
+
+                    SEnvir.Log($"[Admin] 自动创建技能书: [{skillBook.Index}] {skillBook.ItemName}");
+                    skillBookMessage = $"，技能书 [{skillBook.ItemName}] 已自动创建";
+                }
+
+                Message = $"自定义召唤技能 [{name}] 创建成功，召唤怪物: {monster.MonsterName}{skillBookMessage}";
                 SEnvir.Log($"[Admin] 创建自定义召唤技能: {name} -> 召唤 {monster.MonsterName} (Index: {newMagic.Index})");
             }
             catch (Exception ex)
@@ -617,10 +660,22 @@ namespace Server.Web.Pages
 
                 var skillName = magicInfo.Name;
 
-                // 从数据库删除
+                // 删除技能前，先删除对应的技能书
+                string skillBookMessage = "";
+                var skillBook = SEnvir.ItemInfoList?.Binding?.FirstOrDefault(
+                    i => i.ItemType == ItemType.Book && i.Shape == magicIndex);
+                if (skillBook != null)
+                {
+                    var bookName = skillBook.ItemName;
+                    SEnvir.Log($"[Admin] 删除关联技能书: [{skillBook.Index}] {bookName}");
+                    skillBook.Delete();
+                    skillBookMessage = $"，关联技能书 [{bookName}] 已删除";
+                }
+
+                // 从数据库删除技能
                 magicInfo.Delete();
 
-                Message = $"自定义召唤技能 [{skillName}] 已删除";
+                Message = $"自定义召唤技能 [{skillName}] 已删除{skillBookMessage}";
                 SEnvir.Log($"[Admin] 删除自定义召唤技能: {skillName} (ID: {magicIndex})");
             }
             catch (Exception ex)
@@ -644,6 +699,18 @@ namespace Server.Web.Pages
                 return permValue >= (int)required;
             }
             return false;
+        }
+
+        private RequiredClass MirClassToRequiredClass(MirClass mirClass)
+        {
+            return mirClass switch
+            {
+                MirClass.Warrior => RequiredClass.Warrior,
+                MirClass.Wizard => RequiredClass.Wizard,
+                MirClass.Taoist => RequiredClass.Taoist,
+                MirClass.Assassin => RequiredClass.Assassin,
+                _ => RequiredClass.All
+            };
         }
     }
 
