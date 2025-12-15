@@ -303,6 +303,64 @@ namespace Library.SystemModels
             }
         }
         private string _Description;
-        
+
+        #region 自定义召唤技能字段
+
+        /// <summary>
+        /// 召唤技能专用：召唤的怪物索引，0表示使用默认怪物
+        /// </summary>
+        public int SummonMonsterIndex
+        {
+            get { return _SummonMonsterIndex; }
+            set
+            {
+                if (_SummonMonsterIndex == value) return;
+
+                var oldValue = _SummonMonsterIndex;
+                _SummonMonsterIndex = value;
+
+                OnChanged(oldValue, value, "SummonMonsterIndex");
+            }
+        }
+        private int _SummonMonsterIndex;
+
+        /// <summary>
+        /// 召唤技能专用：召唤数量上限，0表示使用默认值(2)
+        /// </summary>
+        public int MaxSummonCount
+        {
+            get { return _MaxSummonCount; }
+            set
+            {
+                if (_MaxSummonCount == value) return;
+
+                var oldValue = _MaxSummonCount;
+                _MaxSummonCount = value;
+
+                OnChanged(oldValue, value, "MaxSummonCount");
+            }
+        }
+        private int _MaxSummonCount;
+
+        /// <summary>
+        /// 召唤技能专用：护身符消耗数量，0表示使用默认值(1)
+        /// </summary>
+        public int AmuletCost
+        {
+            get { return _AmuletCost; }
+            set
+            {
+                if (_AmuletCost == value) return;
+
+                var oldValue = _AmuletCost;
+                _AmuletCost = value;
+
+                OnChanged(oldValue, value, "AmuletCost");
+            }
+        }
+        private int _AmuletCost;
+
+        #endregion
+
     }
 }
