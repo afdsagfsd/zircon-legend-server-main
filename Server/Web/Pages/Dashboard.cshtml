@@ -5,8 +5,9 @@
     ViewData["ActivePage"] = "Dashboard";
 }
 
-<div class="row mb-4">
-    <div class="col-12 d-flex justify-content-between align-items-center">
+<!-- 粘性操作栏 -->
+<div class="page-action-bar">
+    <div class="d-flex justify-content-between align-items-center">
         <h4 class="mb-0">服务器概览</h4>
         <form method="get">
             <button type="submit" class="btn btn-outline-primary">
@@ -71,35 +72,35 @@
                 <table class="table table-sm mb-0">
                     <tbody>
                         <tr>
-                            <td class="text-muted">服务器时间</td>
+                            <td style="color: var(--color-text-secondary);">服务器时间</td>
                             <td class="text-end">@Model.ServerTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">运行时长</td>
+                            <td style="color: var(--color-text-secondary);">运行时长</td>
                             <td class="text-end">@Model.UpTime</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">游戏端口</td>
+                            <td style="color: var(--color-text-secondary);">游戏端口</td>
                             <td class="text-end">@Model.GamePort</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">管理端口</td>
+                            <td style="color: var(--color-text-secondary);">管理端口</td>
                             <td class="text-end">@Model.AdminPort</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">测试服务器</td>
+                            <td style="color: var(--color-text-secondary);">测试服务器</td>
                             <td class="text-end">@(Model.IsTestServer ? "是" : "否")</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">允许登录</td>
+                            <td style="color: var(--color-text-secondary);">允许登录</td>
                             <td class="text-end">
                                 @if (Model.AllowLogin)
                                 {
-                                    <span class="badge bg-success">是</span>
+                                    <span class="badge" style="background: var(--color-success);">是</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger">否</span>
+                                    <span class="badge" style="background: var(--color-danger);">否</span>
                                 }
                             </td>
                         </tr>
@@ -119,23 +120,23 @@
                 <table class="table table-sm mb-0">
                     <tbody>
                         <tr>
-                            <td class="text-muted">经验倍率</td>
-                            <td class="text-end"><span class="badge bg-primary">@Model.ExpRate%</span></td>
+                            <td style="color: var(--color-text-secondary);">经验倍率</td>
+                            <td class="text-end"><span class="badge" style="background: var(--color-accent); color: #000;">@Model.ExpRate%</span></td>
                         </tr>
                         <tr>
-                            <td class="text-muted">掉落倍率</td>
-                            <td class="text-end"><span class="badge bg-success">@Model.DropRate%</span></td>
+                            <td style="color: var(--color-text-secondary);">掉落倍率</td>
+                            <td class="text-end"><span class="badge" style="background: var(--color-success);">@Model.DropRate%</span></td>
                         </tr>
                         <tr>
-                            <td class="text-muted">金币倍率</td>
-                            <td class="text-end"><span class="badge bg-warning text-dark">@Model.GoldRate%</span></td>
+                            <td style="color: var(--color-text-secondary);">金币倍率</td>
+                            <td class="text-end"><span class="badge" style="background: var(--color-warning); color: #000;">@Model.GoldRate%</span></td>
                         </tr>
                         <tr>
-                            <td class="text-muted">最高等级</td>
+                            <td style="color: var(--color-text-secondary);">最高等级</td>
                             <td class="text-end">@Model.MaxLevel</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">最高转生</td>
+                            <td style="color: var(--color-text-secondary);">最高转生</td>
                             <td class="text-end">@Model.MaxRebirth</td>
                         </tr>
                     </tbody>
@@ -156,9 +157,9 @@
             <div class="card-body p-0">
                 @if (Model.RecentPlayers.Count > 0)
                 {
-                    <div class="table-responsive">
+                    <div class="table-responsive-wrapper">
                         <table class="table table-hover mb-0">
-                            <thead class="table-light">
+                            <thead>
                                 <tr>
                                     <th>角色名</th>
                                     <th>等级</th>
@@ -184,8 +185,8 @@
                 }
                 else
                 {
-                    <div class="text-center text-muted py-4">
-                        <i class="bi bi-inbox display-4"></i>
+                    <div class="text-center text-muted-custom py-4">
+                        <i class="bi bi-inbox" style="font-size: 3rem; opacity: 0.3;"></i>
                         <p class="mt-2 mb-0">当前没有在线玩家</p>
                     </div>
                 }

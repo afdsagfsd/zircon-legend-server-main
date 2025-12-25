@@ -705,8 +705,8 @@ body {
         0 8px 32px rgba(0, 0, 0, 0.4),
         0 0 0 1px rgba(88, 166, 255, 0.05);
     backdrop-filter: blur(20px);
+    width: 100%;
     max-width: 420px;
-    width: 90%;
     position: relative;
     z-index: 1;
     animation: loginCardFadeIn 0.5s ease-out;
@@ -916,6 +916,20 @@ body {
     background: var(--color-bg-dark) !important;
     border-bottom: 1px solid var(--color-border) !important;
     color: var(--color-text-secondary) !important;
+}
+
+/* 覆盖 Bootstrap 的 table-dark 类 - 统一为深色主题 */
+.table thead.table-dark th,
+.table-dark thead th {
+    background: var(--color-bg-dark) !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    color: var(--color-text-secondary) !important;
+}
+
+/* 移除 table-striped 的斑马纹（深色主题下不适用） */
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    color: inherit;
+    background-color: transparent;
 }
 
 /* ==================== 打印样式 ==================== */
