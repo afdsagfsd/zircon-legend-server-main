@@ -66,6 +66,12 @@
          * 初始化 Bootstrap Tooltip
          */
         initTooltips() {
+            // 检查 bootstrap 是否可用
+            if (typeof bootstrap === 'undefined' || !bootstrap.Tooltip) {
+                console.warn('Bootstrap Tooltip not available');
+                return;
+            }
+
             // 销毁已存在的 tooltip 实例
             this.elements.tooltips.forEach(tooltip => {
                 if (tooltip && tooltip.dispose) {
@@ -76,13 +82,18 @@
 
             // 为每个导航链接创建 tooltip
             this.elements.navLinks.forEach(link => {
-                const tooltip = new bootstrap.Tooltip(link, {
-                    placement: 'right',
-                    trigger: 'hover',
-                    delay: { show: 300, hide: 100 },
-                    boundary: 'window'
-                });
-                this.elements.tooltips.push(tooltip);
+                try {
+                    const tooltip = new bootstrap.Tooltip(link, {
+                        placement: 'right',
+                        trigger: 'hover',
+                        delay: { show: 300, hide: 100 },
+                        boundary: 'window',
+                        container: 'body'
+                    });
+                    this.elements.tooltips.push(tooltip);
+                } catch (e) {
+                    console.warn('Failed to initialize tooltip:', e);
+                }
             });
         },
 

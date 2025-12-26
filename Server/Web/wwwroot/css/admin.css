@@ -976,6 +976,11 @@ body {
     color: var(--color-text-primary) !important;
 }
 
+/* 系统管理页面 - 修复统计卡片内的文字颜色 */
+.card .card-body .mt-2 {
+    color: var(--color-text-primary) !important;
+}
+
 /* ==================== 打印样式 ==================== */
 @media print {
     .sidebar,
