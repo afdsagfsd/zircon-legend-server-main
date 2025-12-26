@@ -958,6 +958,24 @@ body {
     border-bottom: none;
 }
 
+/* ==================== 职业管理页面样式修复 ==================== */
+/* 修复职业统计卡片中的文字颜色 */
+.card-body .mt-2,
+.card-body h5 {
+    color: var(--color-text-primary) !important;
+}
+
+/* 修复 text-muted 类，使其在深色背景下更清晰 */
+.card-body .text-muted {
+    color: var(--color-text-secondary) !important;
+    opacity: 0.8 !important;
+}
+
+/* 修复 text-dark 类，改为浅色 */
+.card-body .text-dark {
+    color: var(--color-text-primary) !important;
+}
+
 /* ==================== 打印样式 ==================== */
 @media print {
     .sidebar,
