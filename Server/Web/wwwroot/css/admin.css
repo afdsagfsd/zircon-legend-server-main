@@ -969,6 +969,7 @@ body {
 .table-scrollable-card .card-body {
     flex: 1;
     overflow-y: auto;
+    overflow-x: visible;
     padding: 0;
 }
 
@@ -982,6 +983,12 @@ body {
     top: 0;
     z-index: 10;
     background: var(--color-bg-dark);
+}
+
+/* 确保操作列可以溢出 */
+.table-scrollable-card .table td:last-child {
+    overflow: visible;
+    position: relative;
 }
 
 /* 覆盖 Bootstrap 的 table-light 类 */
@@ -1127,22 +1134,9 @@ body {
 }
 
 /* ==================== 下拉菜单样式修复 ==================== */
-/* 解决表格内下拉菜单被遮挡问题 */
-
-/* 允许 card-body 的内容溢出显示 */
-.table-scrollable-card .card-body {
-    overflow: visible !important;
-}
-
-/* 使用外层 wrapper 来控制滚动 */
-.table-scrollable-card {
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-/* 下拉菜单样式 */
+/* 表格内下拉菜单样式 */
 .table .dropdown-menu {
-    z-index: 1050 !important;
+    z-index: 9999 !important;
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--color-border);
     background: var(--color-surface);

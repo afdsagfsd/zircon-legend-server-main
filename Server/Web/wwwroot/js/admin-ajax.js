@@ -222,46 +222,65 @@ function confirmAction(message, callback) {
 
 // 修复表格内下拉菜单被遮挡问题
 const DropdownFixer = {
+    originalParent: null,
+    originalNextSibling: null,
+
     init() {
-        // 使用 MutationObserver 监听下拉菜单的 show 类
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    const menu = mutation.target;
-                    if (menu.classList.contains('dropdown-menu') && menu.closest('.table')) {
-                        if (menu.classList.contains('show')) {
-                            // 菜单打开时，修复定位
-                            const btnGroup = menu.closest('.btn-group');
-                            if (btnGroup) {
-                                const rect = btnGroup.getBoundingClientRect();
-                                menu.style.position = 'fixed';
-                                menu.style.zIndex = '9999';
-                                menu.style.top = (rect.bottom + 2) + 'px';
-                                menu.style.left = 'auto';
-                                menu.style.right = (window.innerWidth - rect.right) + 'px';
-                                menu.style.transform = 'none';
-                                menu.style.inset = 'auto';
-                            }
-                        } else {
-                            // 菜单关闭时，重置样式
-                            menu.style.position = '';
-                            menu.style.zIndex = '';
-                            menu.style.top = '';
-                            menu.style.left = '';
-                            menu.style.right = '';
-                            menu.style.transform = '';
-                            menu.style.inset = '';
-                        }
+        const self = this;
+
+        // 监听下拉菜单显示事件
+        document.addEventListener('shown.bs.dropdown', function(e) {
+            const toggle = e.target;
+            const menu = toggle.nextElementSibling;
+
+            if (menu && menu.classList.contains('dropdown-menu') && toggle.closest('.table')) {
+                // 保存原始位置信息
+                self.originalParent = menu.parentNode;
+                self.originalNextSibling = menu.nextSibling;
+
+                // 计算按钮位置
+                const rect = toggle.getBoundingClientRect();
+
+                // 移动菜单到 body
+                document.body.appendChild(menu);
+
+                // 设置固定定位
+                menu.style.position = 'fixed';
+                menu.style.zIndex = '9999';
+                menu.style.top = (rect.bottom + 2) + 'px';
+                menu.style.right = (window.innerWidth - rect.right) + 'px';
+                menu.style.left = 'auto';
+                menu.style.transform = 'none';
+            }
+        });
+
+        // 监听下拉菜单隐藏事件
+        document.addEventListener('hidden.bs.dropdown', function(e) {
+            const toggle = e.target;
+
+            // 查找 body 中的 dropdown-menu
+            const menus = document.body.querySelectorAll(':scope > .dropdown-menu');
+            menus.forEach(function(menu) {
+                // 重置样式
+                menu.style.position = '';
+                menu.style.zIndex = '';
+                menu.style.top = '';
+                menu.style.right = '';
+                menu.style.left = '';
+                menu.style.transform = '';
+
+                // 移回原位置
+                if (self.originalParent) {
+                    if (self.originalNextSibling) {
+                        self.originalParent.insertBefore(menu, self.originalNextSibling);
+                    } else {
+                        self.originalParent.appendChild(menu);
                     }
                 }
             });
-        });
 
-        // 监听整个文档的属性变化
-        observer.observe(document.body, {
-            attributes: true,
-            subtree: true,
-            attributeFilter: ['class']
+            self.originalParent = null;
+            self.originalNextSibling = null;
         });
     }
 };
