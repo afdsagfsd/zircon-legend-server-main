@@ -1,3 +1,5 @@
+# 后台功能基本没得变更了，所以该仓库转为只读，感谢大家的喜爱的星星
+
 基于https://gitee.com/raphaelcheung/zircon-legend-server二次开发，包含了后台管理界面
 启动后访问http://[ip]:17080，仅用于学习用途，QQ群 915941142，相关data数据在q群中下载
 
