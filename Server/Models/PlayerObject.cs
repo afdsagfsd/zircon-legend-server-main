@@ -4415,7 +4415,7 @@ namespace Zircon.Server.Models
 
             if (!string.IsNullOrEmpty(Teleport(destMap, destMap.GetRandomLocation(location, 10, 25)))) return;
 
-            TeleportTime = SEnvir.Now.AddMinutes(5);
+            TeleportTime = SEnvir.Now.AddSeconds(1);
         }
 
         public override void Dodged()
