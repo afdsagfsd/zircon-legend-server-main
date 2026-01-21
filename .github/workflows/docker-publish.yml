@@ -27,10 +27,11 @@ jobs:
       # 步骤4：构建并推送镜像
       - name: Build and push
         uses: docker/build-push-action@v5
-        dockerfile: dockerfile.new  # 关键：指定自定义构建文件
         with:
           context: .  # Dockerfile所在目录
           push: true  # 推送镜像
+          dockerfile: dockerfile.new  # 关键：指定自定义构建文件
+
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/zironwithweb:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/zironwithweb:v1.0.${{ github.run_number }}
