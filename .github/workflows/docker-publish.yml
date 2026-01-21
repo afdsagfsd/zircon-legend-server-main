@@ -30,7 +30,7 @@ jobs:
         with:
           context: .  # Dockerfile所在目录
           push: true  # 推送镜像
-          file: ./Dockerfile.new  # 关键：指定自定义构建文件
+          file: ./Dockerfile  # 关键：指定自定义构建文件
 
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/zironwithweb:latest
