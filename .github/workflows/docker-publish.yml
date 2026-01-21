@@ -32,4 +32,4 @@ jobs:
           push: true  # 推送镜像
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/zironwithweb:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/zironwithweb:${{ github.sha }}  # 用提交哈希作为版本
+            #${{ secrets.DOCKER_HUB_USERNAME }}/zironwithweb:${{ github.sha }}  # 用提交哈希作为版本
