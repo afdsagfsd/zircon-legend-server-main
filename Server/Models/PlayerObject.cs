@@ -15564,18 +15564,20 @@ namespace Zircon.Server.Models
                     cells = CurrentMap.GetCells(CurrentLocation, 0, 4 + magic.Level);
                     foreach (Cell cell in cells)
                     {
-                        if (cell.Objects == null)
-                        {
-                            if (SEnvir.Random.Next(40) == 0)
-                                locations.Add(cell.Location);
+                        //去掉空白格子的闪电动画
+                        // if (cell.Objects == null)
+                        // {
+                        //     if (SEnvir.Random.Next(40) == 0)
+                        //         locations.Add(cell.Location);
 
-                            continue;
-                        }
+                        //     continue;
+                        // }
 
+                        //6级命中率调高
                         foreach (MapObject target in cell.Objects)
                         {
                             if (magic.Level <= 0 && SEnvir.Random.Next(2) > 0) continue;
-                            if (magic.Level > 0 && SEnvir.Random.Next(2 + magic.Level / 2) > magic.Level / 2) continue;
+                            if (magic.Level > 0 && SEnvir.Random.Next(magic.Level == 6 ? 4 : (2 + magic.Level / 2)) > magic.Level / 2) continue;
 
                             if (!CanAttackTarget(target)) continue;
 
