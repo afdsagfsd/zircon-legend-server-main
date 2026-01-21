@@ -3,9 +3,9 @@ RUN apt-get update && apt-get install -y libicu-dev curl p7zip-full
 
 RUN cd /
 
-RUN curl -OL  https://github.com/raphaelcheung/zircon-legend-server/releases/download/v1.12.2/Server-v1.12.2-linux-x64.zip
+RUN curl -OL  https://github.com/afdsagfsd/zircon-legend-server-main/releases/download/v1.0/linux64web.zip
 
-RUN 7z x Server-v1.12.2-linux-x64.zip -o/zircon
+RUN 7z x linux64web.zip -o/zircon
 RUN chmod -R 777 /zircon
 
 WORKDIR /zircon
