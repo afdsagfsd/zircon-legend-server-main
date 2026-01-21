@@ -459,7 +459,7 @@ namespace Zircon.Server.Models
                         break;
                     }
 
-                    if (movement.NeedSpawn != null)
+                    if (movement.NeedSpawn != null) //封闭的门解封，需要去数据库地图文件中把needspawn的值设为null
                     {
                         SpawnInfo spawn = SEnvir.Spawns.FirstOrDefault(x => x.Info == movement.NeedSpawn);
 

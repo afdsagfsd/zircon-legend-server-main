@@ -373,12 +373,12 @@ namespace Library
         };
 
 
-        public const int InventorySize = 49,
+        public const int InventorySize = 49, //背包的大小
                          EquipmentSize = 16,
                          CompanionInventorySize = 40,
                          CompanionEquipmentSize = 4,
                          EquipmentOffSet = 1000,
-                         StorageSize = 100;
+                         StorageSize = 100;  //仓库的大小
 
         public const int AttackDelay = 1500,
                          ASpeedRate = 47,
